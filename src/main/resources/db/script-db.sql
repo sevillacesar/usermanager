@@ -1,0 +1,22 @@
+CREATE DATABASE testdb;
+
+CREATE TABLE USERS (
+    id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created DATETIME NOT NULL,
+    modified DATETIME NOT NULL,
+    lastLogin DATETIME,
+    token VARCHAR(255),
+    isActive BIT NOT NULL
+);
+
+CREATE TABLE PHONES (
+    id VARCHAR(255) PRIMARY KEY,
+    number VARCHAR(255),
+    citycode VARCHAR(255),
+    contrycode VARCHAR(255),
+    user_id VARCHAR(255) NOT NULL,
+    CONSTRAINT FK_PHONES_USER FOREIGN KEY (user_id) REFERENCES USERS (id)
+);

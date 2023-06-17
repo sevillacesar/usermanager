@@ -1,4 +1,4 @@
-package com.nisum.usermanager;
+package com.sevilla.usermanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
