@@ -78,6 +78,25 @@ http://localhost:8080/swagger-ui/index.html
 
 - You can use Postman or Swagger to test the software.
 
+```
+
+curl --location 'http://localhost:8080/signup' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"name": "test1",
+"email": "prueba1@email.com",
+"password": "Pa#12345678",
+"phones": [
+        {
+        "number": "1234567",
+        "citycode": "1",
+        "contrycode": "10"
+        }
+    ]
+}'
+
+```
+
 ## Documentation
 
 - This Readme
