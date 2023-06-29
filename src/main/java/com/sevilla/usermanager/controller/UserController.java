@@ -25,35 +25,11 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Value("${app.email.pattern}")
-	private String emailPattern;
-	@Value("${app.password.pattern}")
-	private String passwordPattern;
-
-	private static final String VALID_MESSAGE = "Por favor verifica los siguientes campos";
-
 	@PostMapping("/signup")
 	public ResponseEntity<ResponseObject> addUser(@RequestBody UserDto userDto) {
 		ResponseObject response = new ResponseObject();
-		List<String> errors = new ArrayList<>();
 		try {
-			Optional<InfoUser> infoUser = userService.findByEmail(userDto.getEmail());
-			if (infoUser.isPresent()) {
-				errors.add("El email ya se encuentra registrado.");
-			}
-			if (!CommonValidate.patternMatches(userDto.getEmail(), emailPattern)) {
-				errors.add("El formato del email es incorrecto.");
-			}
-			if (!CommonValidate.patternMatches(userDto.getPassword(), passwordPattern)) {
-				errors.add("El formato del password es incorrecto.");
-			}
-			if (!errors.isEmpty()) {
-				response.badResponse(errors, VALID_MESSAGE);
-			} else {
-				User user = userService.createUser(userDto);
-				response.setCode(HttpStatus.CREATED);
-				response.createdResponse(ConvertUtil.convertToInfoUser(user), "Usuario creado con éxito!");
-			}
+			response = userService.findUser(userDto);
 		} catch (Exception e) {
 			response.badResponse(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
@@ -65,17 +41,12 @@ public class UserController {
 	public ResponseEntity<ResponseObject> getUserByEmail(@RequestBody UserDto userDto) {
 		ResponseObject response = new ResponseObject();
 		try {
-			Optional<InfoUser> infoUser = userService.findByEmail(userDto.getEmail());
-			if (infoUser.isPresent()) {
-				response.successResponse(infoUser);
-			} else {
-				response.badResponse("Usuario no encontrado");
-			}
-			return ResponseEntity.status(response.getCode()).body(response);
+			response = userService.findUserByEmail(userDto.getEmail());
 		} catch (Exception e) {
 			response.badResponse(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
+		return ResponseEntity.status(response.getCode()).body(response);
 	}
 
 	@GetMapping("/user/{id}")
@@ -85,14 +56,7 @@ public class UserController {
 
 	@GetMapping("/users")
 	public ResponseEntity<ResponseObject> getAllUsers() {
-		ResponseObject response = new ResponseObject();
-		List users = userService.getUsers();
-		if (CollectionUtils.isEmpty(users)) {
-			response.badResponse("Users not found");
-			response.setCode(HttpStatus.NOT_FOUND);
-		} else {
-			response.successResponse(users);
-		}
+		ResponseObject response = userService.getUsers();
 		return ResponseEntity.status(response.getCode()).body(response);
 	}
 	

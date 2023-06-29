@@ -97,6 +97,30 @@ curl --location 'http://localhost:8080/signup' \
 
 ```
 
+- You can get user by email:
+
+```
+
+curl --location 'http://localhost:8080/get_user_by_email' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <TOKEN>' \
+--data-raw '{
+    "email": "prueba1@mail.com"
+}'
+
+```
+
+- You can get all users:
+
+```
+
+curl --location 'http://localhost:8080/users' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <TOKEN>'
+
+```
+
+
 ## Documentation
 
 - This Readme

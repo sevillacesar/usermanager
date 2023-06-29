@@ -74,7 +74,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private UserDetails getUserDetails(String token) {
         String[] jwtSubject = jwtUtil.getSubject(token).split(",");
         List<GrantedAuthority> roleUser = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
-        User userDetails = new User(jwtSubject[0], jwtSubject[1], roleUser);
+        User userDetails = new User(jwtSubject[0], jwtSubject[0], roleUser);
         return userDetails;
     }
 }
